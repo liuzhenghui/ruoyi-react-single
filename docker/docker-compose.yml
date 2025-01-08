@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql8-13306
+    restart: on-failure
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: 123456
+    ports:
+      - 13306:3306
+    volumes:
+      - ./data/mysql/data/:/var/lib/mysql/:cached
+      - ./data/mysql/logs/:/var/log/mysql/:cached
+      - ./data/mysql/sql/:/sql/:cached
+  redis:
+    image: redis
+    container_name: redis-16379
+    restart: always
+    command:
+      /bin/bash -c "redis-server /usr/local/etc/redis/redis.conf"
+    ports:
+      - 16379:6379
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+      - ./data/redis/datadir:/data
+      - ./data/redis/logs:/logs
+
